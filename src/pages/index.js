@@ -38,7 +38,7 @@ export default function Home() {
       <div className={styles.imageContainer}>
       <img
           className={clsx(styles.backgroundImage, styles.halfWidth)}
-          src="/img/oas-overview.png"
+          src="https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306191548756.png"
           alt="Background Image"
           />
           </div>
