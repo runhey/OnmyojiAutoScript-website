@@ -1,0 +1,318 @@
+# User Option
+
+这里介绍用户选项的实现原理和使用，oas 使用[pydantic](https://docs.pydantic.dev/latest/)作为其数据接口, 同时借助自动生成文档的功能实现GUI的快速配置。
+
+我们对于用户选项的开发进行了大量的简化，你可以非常快速的定义用户的可选项。
+
+### 选项层级
+
+在`./module/config/config_model.py`中定义了一个类`ConfigModel`,  这个是针对实例配置的总的接口，这个类输入的数据是`config.json`数据，它会自动的根据代码进行数据的更新。`ConfigModel`的类的变量就是任务的配置变量。
+
+```python
+class ConfigModel(BaseModel):
+    config_name: str = "oas"
+    script: Script = Field(default_factory=Script)
+    restart: Restart = Field(default_factory=Restart)
+    global_game: GlobalGame = Field(default_factory=GlobalGame)
+```
+
+上面这个例子就是针对脚本的一些任务的配置任务列表。
+
+对于某一个具体的任务的参数选项，**必须**保证如下的层级结构：
+
+```python
+任务（task），每个任务可以包含多个选项组
+----选项组（group），每个选项选项组可以包含选项。
+---------选项（argument），每个选项会有自行的设置
+```
+
+:::info
+
+所有的选项都必须遵循`pydantic`的接口
+
+:::
+
+### Pydantic简易使用
+
+有如下优势：
+
+1. 基于类型注解：Pydantic 使用 Python 的类型注解来定义数据模型，这使得代码更加清晰、易于理解和维护。
+2. 数据验证：Pydantic 可以根据定义的模型对输入数据进行验证，包括类型检查、长度检查、正则表达式匹配等。它会自动检测并报告验证错误，提供了可靠的数据验证机制。
+3. 数据解析和转换：Pydantic 可以自动将输入数据解析为模型对象，并进行数据类型转换。它支持从 JSON、字典、数据库查询结果等多种数据源中解析数据，并将其转换为模型对象。
+4. 默认值和可选项：Pydantic 支持定义默认值和可选项，可以为模型字段指定默认值，或将字段标记为可选项，以便在解析过程中处理缺失的字段。
+5. 文档生成和交互式API：Pydantic 可以根据模型定义自动生成文档，并提供交互式的 API 接口，方便开发人员查看和测试模型的属性和方法。
+6. 与其他库的集成：Pydantic 可以与其他流行的 Python 库和框架集成，如 FastAPI、Starlette、Django 等，提供更加便捷和高效的数据处理和验证功能。
+
+我们并不需要这么多的功能, 只需要简单导入两个接口
+
+```python
+from pydantic import BaseModel, Field
+```
+
+1. 继承`BaseModel`成为数据接口,  继承之后在类内即可定义参数字段
+
+2. `Field`用于定义参数字段的所有设置，字段配置的工具类，它可以用于在模型定义中设置各种字段参数：
+
+   以下是 `Field` 类的一些常用参数：
+
+   - `default`: 设置字段的默认值。
+   - `default_factory`: 设置字段的默认值工厂函数，可以是一个可调用对象。
+   - `alias`: 设置字段的别名，用于在数据解析时匹配不同的键名。
+   - `title`: 设置字段的标题，用于生成文档或其他显示目的。
+   - `description`: 设置字段的描述，用于生成文档或其他显示目的。
+   - `example`: 设置字段的示例值，用于生成文档或其他显示目的。
+   - `const`: 设置字段的常量值，用于进行相等性验证。
+   - `ge`, `gt`, `le`, `lt`: 设置字段的数值上下限，用于进行数值范围验证。
+   - `regex`: 设置字段的正则表达式，用于进行匹配验证。
+   - `max_length`, `min_length`: 设置字段的字符串长度上下限，用于进行长度验证。
+   - `max_items`, `min_items`: 设置字段的列表或集合元素个数上下限，用于进行元素个数验证。
+   - `unique_items`: 设置字段的列表或集合是否要求唯一元素。
+   - `deprecated`: 设置字段是否已被废弃。
+
+## 新增
+
+我们先简单描述一下新增任务配置的所有的操作：
+
+0. 阅读注意事项，这点非常重要，也许第一遍并没有明白，但是务必回头再详细看一遍
+
+1. 首先在`./tasks/<任务名>/config.py`下建立一个任务总的配置类`<任务名+Config>`
+2. 同样的路径下建立选项组
+3. 对每一个选项组类进行选项的定义
+4. 当你完成任务的选项配置后，可以将这一个选项加入到总的配置中: 即添加到`class ConfigModel(BaseModel)`类中
+5. 为此你还需要为 这个任务添加到GUI导航菜单中
+6. 将这个任务配置添加到调度器中
+7. 翻译（这个不是必须的）
+
+### （0）注意事项
+
+1. 在正式定义用户选项之前请认真分析整个任务所需的用户选项，不提供用户选项往往更有效
+
+1. 请你务必遵循一下命名规则：
+   - 任务的命名必须以游戏官方的命名为准，**不得出现中文或者拼音**，尽量不要缩写，如果你不知道任务名如何，可以到这个[Onmyoji Wiki | Fandom](https://onmyoji.fandom.com/wiki/Onmyoji_Wiki)进行翻阅。
+   - 我们约定任务的命名规则是大驼峰，一切以`./tasks/<TaskName>`为准
+   - 大驼峰如 `RaidMode`,  如果出现数字请直接加在后面`RaidMode9`
+   - 大驼峰使用场景：任务名、选项组类名、`Enum`名
+   - 下划线如 `raid_mode`, 如果出现数字请在后面先添加一个下划线后再添加数字`raid_mode_9`
+   - 下划线使用场景：变量名，参数字段，选项值
+
+### （1）新增  任务
+
+1. 在`./tasks/<任务名>/config.py`下建立一个任务总的配置类`<任务名+Config>`
+
+   ```python
+   from pydantic import BaseModel, Field
+   from enum import Enum
+   
+   class RealmRaid(BaseModel):
+       pass
+   ```
+
+### （1）新增  选项组
+
+1. 同样的路径下`./tasks/<任务名>/`新建对应的每个选项组的配置类（当然也可直接定义在步骤1中的`config.py`文件中），如`config_scheduler.py`文件下的`Scheduler(BaseModel)`类。
+
+   ```python
+   from enum import Enum
+   from datetime import datetime, timedelta
+   from pydantic import BaseModel, ValidationError, validator, Field
+   
+   class Scheduler(BaseModel):
+   	pass
+   ```
+
+2. 将这个 选项组 加入到 任务 中, 
+
+   ```python
+   # ./tasks/<任务名>/config.py 文件
+   from tasks.RealmRaid.config_scheduler import Scheduler
+   
+   
+   class RealmRaid(BaseModel):
+       scheduler: Scheduler = Field(default_factory=Scheduler)
+   ```
+
+### （3）新增  选项
+
+1. 对选项组依次添加选项（代码的顺序就是提供给用户显示的顺序）
+
+   - `int`  、`float`  数字类型
+
+     ``` python
+     interval_hours: int = Field(default=0, description='[间隔小时]:默认为0\n 可选0-23')
+     
+     # Field 可填参数:
+     # default[必填]
+     # description[必填]
+     # title[可填]
+     # ge[可填]
+     # le[可填]
+     ```
+
+   - `str`  输入类型
+
+     ```python
+     handle: str = Field(default='auto',
+                             description='you can use auto or your emulator title')
+     # Field 可填参数:
+     # default[必填]
+     # description[必填]
+     # title[可填]
+     
+     ```
+
+   - `bool` 类型
+
+     ```python
+     enable: bool = Field(default=False, description='[是否启用]:默认为False')
+     
+     # Field 可填参数:
+     # default[必填]
+     # description[必填]
+     # title[可填]    
+     ```
+
+   - `Enum` 类型
+
+     ```python
+     # 定义可选项
+     from enum import Enum
+     
+     class AttackNumber(str, Enum):
+         NINE = 'nine'
+         ALL = 'all'
+         
+     # 定义参数字段
+     attack_number: AttackNumber = Field(title='Attack Number', default=AttackNumber.ALL,
+                                             description='[挑战次数]:默认为all，一直打到没有\n nine为打九次')
+         
+     # Field 可填参数:
+     # default[必填]
+     # description[必填]
+     # title[可填] 
+     ```
+
+   - `datetime` 类型
+
+     这个类型最后会转化为`str`供gui显示
+
+     ```python
+     next_run: datetime = Field(default="2023-01-01 00:00:00", description='[下次执行时间]:默认为2023-01-01 00:00:00\n 清空后回车设置当前的时间')
+         
+     # Field 可填参数:
+     # default[必填]
+     # description[必填]
+     # title[可填] 
+     ```
+
+2. 一个完整的`Scheduler` 示例
+
+   ```python
+   class Scheduler(BaseModel):
+       enable: bool = Field(default=False, description='[是否启用]:默认为False')
+       next_run: datetime = Field(default="2023-01-01 00:00:00", description='[下次执行时间]:默认为2023-01-01 00:00:00\n 清空后回车设置当前的时间')
+       interval_days: int = Field(default=1, description='[间隔天数]:默认为1\n 可选0-7')
+       interval_hours: int = Field(default=0, description='[间隔小时]:默认为0\n 可选0-23')
+       interval_minutes: int = Field(default=0, description='[间隔分钟]:默认为0\n 可选0-59')
+   ```
+
+### （4）加入Model
+
+打开`./module/config/config_model.py`文件
+
+其思路也是简单的嵌套模型
+
+```python
+# from tasks.<任务名>.config import <任务名>
+from tasks.RealmRaid.config import RealmRaid
+
+
+class ConfigModel(BaseModel):
+    realm_raid: RealmRaid = Field(default_factory=RealmRaid)
+```
+
+### （5）添加到GUI导航菜单
+
+这一步非常简单，打开`./module/config/config_menu.py`， 在`ConfigMenu`类的`__init__()`中加入即可
+
+```python
+# 日常的任务
+  self.menu["Daily Task"] = ['AreaBoss', 'GoldYoukai', 'ExperienceYoukai', 'Nian', 'RealmRaid']
+```
+
+### （6）添加到调度器 
+
+oas 继承了 Alas 对于任务的调度设计
+
+修改 `config_manual.py` 中的 `SCHEDULER_PRIORITY` 值，将 `<任务名>` 插入其中。
+
+SCHEDULER_PRIORITY 是一个过滤器，用大于号 `>` 连接任务，靠前的任务会先被调度器执行。基本的任务排序规则是：重启 > 收菜类 > 每日收获类 > 每日战斗类 > 正常出击类 > 纯消磨时间类。为防止用户盲目地把自己想运行的任务放到前面，导致收菜类任务被延迟，SCHEDULER_PRIORITY 不会暴露到 GUI 中，需要开发者手动编写。
+
+### （7）翻译
+
+在 `./module/config/i18n/{lang}.ts`是翻译的文件，这里我们默认是`zh_CN.ts`，这个文件的本质就是html文件。
+
+1. 添加翻译项: 以html形式打开文件，当然以txt形式打开也可。
+
+   `context` 指翻译的上下文，具体的说就是调用`qrts()`的某个具体的qml文件名，在我们用户选项这里是Args
+
+   ```html
+   <context>
+       <name>Args</name>
+       <message>
+           <source>home</source>
+           <translation>主页</translation>
+       </message>
+   	<message>
+           <source>setting</source>
+           <translation>设置</translation>
+       </message>
+   </context>
+   ```
+
+2. 编译成二进制：使用Linguist进行编译输出`zh_CN.qm`。下载链接[Releases · thurask/Qt-Linguist (github.com)](https://github.com/thurask/Qt-Linguist/releases)
+
+​	打开文件后
+
+![image-20230622125909254](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221259538.png)
+
+​	我们不建议在Linguist中修改任何的翻译项，只需要编译生成文件即可
+
+![image-20230622130033514](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221300431.png)
+
+:::tip
+
+你需要再次阅读一遍 注意事项
+
+:::
+
+## 访问选项
+
+在整个config层级结构中，Config持有一个`ConfigModel`类型的`model`变量
+
+```python
+self.config.model.<task>.<group>.<argument>
+```
+
+当然可以这样
+
+```python
+self.config.<task>.<group>.<argument>
+```
+
+这个是因为重写了
+
+```python
+def __getattr__(self, name):
+    """
+    一开始是打算直接继承ConfigModel的，但是pydantic会接管所有的变量
+    故而选择持有ConfigModel
+    :param name:
+    :return:
+    """
+    try:
+        return getattr(self.model, name)
+    except AttributeError:
+        logger.error(f'can not ask this variable {name}')
+        return None  # 或者抛出异常，或者返回其他默认值
+```
+

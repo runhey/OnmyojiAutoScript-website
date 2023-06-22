@@ -81,7 +81,7 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'developmentSidebar',
             position: 'right',
-            label: '开发相关',
+            label: '开发文档',
           },
           {
             href: 'https://github.com/runhey/OnmyojiAutoScript',
