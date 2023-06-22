@@ -1,4 +1,4 @@
-# 安装
+# Installation
 
 ## 自动安装
 :::caution
