@@ -102,21 +102,32 @@ from pydantic import BaseModel, Field
    ```python
    from pydantic import BaseModel, Field
    from enum import Enum
+   from tasks.Component.config_base import ConfigBase
    
-   class RealmRaid(BaseModel):
+   class RealmRaid(ConfigBase):
        pass
    ```
+   
+   :::info
+   
+   为了解决`datetime.timedelta`在pydantic的输出类型不是str这个[**问题**](https://github.com/pydantic/pydantic/discussions/5687)
+   
+   我们为其设定的一个解析方式，你只需要继承这个 `ConfigBase` 即可
+   
+   :::
 
 ### （1）新增  选项组
 
-1. 同样的路径下`./tasks/<任务名>/`新建对应的每个选项组的配置类（当然也可直接定义在步骤1中的`config.py`文件中），如`config_scheduler.py`文件下的`Scheduler(BaseModel)`类。
+#### <1> 如果是自己定义的
+
+1. 同样的路径下`./tasks/<任务名>/`新建对应的每个选项组的配置类（当然也可直接定义在步骤1中的`config.py`文件中），如`config.py`文件下的`RaidConfig(BaseModel)`类。
 
    ```python
    from enum import Enum
    from datetime import datetime, timedelta
    from pydantic import BaseModel, ValidationError, validator, Field
    
-   class Scheduler(BaseModel):
+   class RaidConfig(BaseModel):
    	pass
    ```
 
@@ -124,11 +135,31 @@ from pydantic import BaseModel, Field
 
    ```python
    # ./tasks/<任务名>/config.py 文件
-   from tasks.RealmRaid.config_scheduler import Scheduler
    
+   class RealmRaid(ConfigBase):
+       raid_config: RaidConfig = Field(default_factory=RaidConfig)
+   ```
+
+#### <2>使用通用组件的选项
+
+为了代码的复用你可以直接引入并且定义
+
+1. 直接导入其他组件的选项组
+
+   ```python
+   from tasks.Component.config_scheduler import Scheduler
    
-   class RealmRaid(BaseModel):
+   class RealmRaid(ConfigBase):
        scheduler: Scheduler = Field(default_factory=Scheduler)
+   ```
+
+2. 如果导入的默认值不合适，可以这样修改, 将`default_factory`替换成`default`
+
+   ```python
+   from tasks.Component.config_scheduler import Scheduler
+   
+   class RealmRaid(ConfigBase):
+   	scheduler: Scheduler = Field(default=Scheduler(priority=6))
    ```
 
 ### （3）新增  选项
@@ -138,7 +169,7 @@ from pydantic import BaseModel, Field
    - `int`  、`float`  数字类型
 
      ``` python
-     interval_hours: int = Field(default=0, description='[间隔小时]:默认为0\n 可选0-23')
+     priority: int = Field(default=5, description='priority_help')
      
      # Field 可填参数:
      # default[必填]
@@ -151,8 +182,8 @@ from pydantic import BaseModel, Field
    - `str`  输入类型
 
      ```python
-     handle: str = Field(default='auto',
-                             description='you can use auto or your emulator title')
+     serial: str = Field(default="auto",
+                             description='serial_help')
      # Field 可填参数:
      # default[必填]
      # description[必填]
@@ -163,7 +194,7 @@ from pydantic import BaseModel, Field
    - `bool` 类型
 
      ```python
-     enable: bool = Field(default=False, description='[是否启用]:默认为False')
+     enable: bool = Field(default=False, description='enable_help')
      
      # Field 可填参数:
      # default[必填]
@@ -183,7 +214,7 @@ from pydantic import BaseModel, Field
          
      # 定义参数字段
      attack_number: AttackNumber = Field(title='Attack Number', default=AttackNumber.ALL,
-                                             description='[挑战次数]:默认为all，一直打到没有\n nine为打九次')
+                                             description='attack_number_help')
          
      # Field 可填参数:
      # default[必填]
@@ -191,12 +222,12 @@ from pydantic import BaseModel, Field
      # title[可填] 
      ```
 
-   - `datetime` 类型
+   - `TimeDelta` 类型
 
      这个类型最后会转化为`str`供gui显示
 
      ```python
-     next_run: datetime = Field(default="2023-01-01 00:00:00", description='[下次执行时间]:默认为2023-01-01 00:00:00\n 清空后回车设置当前的时间')
+     success_interval: TimeDelta = Field(default=TimeDelta(days=1), description='success_interval_help')
          
      # Field 可填参数:
      # default[必填]
@@ -207,12 +238,15 @@ from pydantic import BaseModel, Field
 2. 一个完整的`Scheduler` 示例
 
    ```python
-   class Scheduler(BaseModel):
-       enable: bool = Field(default=False, description='[是否启用]:默认为False')
-       next_run: datetime = Field(default="2023-01-01 00:00:00", description='[下次执行时间]:默认为2023-01-01 00:00:00\n 清空后回车设置当前的时间')
-       interval_days: int = Field(default=1, description='[间隔天数]:默认为1\n 可选0-7')
-       interval_hours: int = Field(default=0, description='[间隔小时]:默认为0\n 可选0-23')
-       interval_minutes: int = Field(default=0, description='[间隔分钟]:默认为0\n 可选0-59')
+   class Scheduler(ConfigBase):
+       enable: bool = Field(default=False, description='enable_help')
+       next_run: datetime = Field(default="2023-01-01 00:00:00", description='next_run_help')
+       priority: int = Field(default=5, description='priority_help')
+   
+       success_interval: TimeDelta = Field(default=TimeDelta(days=1), description='success_interval_help')
+       failure_interval: TimeDelta = Field(default=TimeDelta(days=1), description='failure_interval_help')
+       server_update: time = Field(default=time(hour=9, minute=0, second=0), description='server_update_help')
+   
    ```
 
 ### （4）加入Model

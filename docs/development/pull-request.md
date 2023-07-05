@@ -27,9 +27,10 @@
    > `message`的统一格式
    >
    > ```bash
-   > doc(your part): your changes
-   > feat(module name): your add
-   > fix(module name): your fix
+   > doc[(your part)]: your changes
+   > feat[(module name)]: your add
+   > perf[(module name)]: your modification
+   > fix[(module name)]: your fix
    > ```
 
 6. 完成开发后，推送本地分支到自己的仓库

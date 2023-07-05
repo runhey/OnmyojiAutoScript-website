@@ -20,7 +20,7 @@
 
 :::
 
-点击最上方的`Screen Setting`  即可出现投屏的设置
+点击最上方的`Screen Setting`  即可出现投屏的设置
 
 ![image-20230622162429129](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221624255.png)
 
@@ -73,7 +73,7 @@
 5. 保存目标图片, 点击`Save image`即可保存图片。**一定不要忘记了保存图片**
 6. 修改其他辅助信息：`Threshod`表示图片匹配的阈值保存默认即可（因为你还可以在代码中手动设置匹配阈值），`Description`为描述这一项的代码注释，最后会被提取为注释
 7. 重复步骤3、4、5、6直到所有的目标图片记录
-8. 最后点击右边的`Save File`保存文件，但是建议每隔几个保存一次
+8. 最后点击右边的`Save File`保存文件，但是建议每隔几个保存一次
 
 ### Click
 
@@ -141,8 +141,37 @@
 - Mothod: Default
 - Keyword：如果Mode是Single或者是Full表示要匹配的字符，如果是其他的就不填
 
+### List
 
+:::info
 
+红框表示每一项的范围
+
+绿框表示整个列表的范围
+
+:::
+
+![image-20230705235135895](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202307052351666.png)
+
+RuleList的应用场景是为了支持游戏界面中无法一次性展示所有元素的界面操作，但是这并不可以满足所有的滑动列表。
+
+其底层的接口还是RuleImage 或者是 RuleOcr，还是存在相对的局限性。
+
+- 如果是基于Ocr来操作，请将Type选为ocr
+
+  为此绿框就是ocr识别所有文字的的区域，不同于其他的Rule工具，RuleList的每一项就是具体游戏的元素，你需要同游戏的顺序一致定义每一项的值，上图中定义了御魂的层数
+
+  为此将方向选中为竖直vertical。
+
+  **有一项非常重要**：每一个元素的大小要符合实际的大小，上图中红框的高度同游戏界面中的高度一致，这是为了便于计算每次滑动的距离
+
+- 基于ocr非常大的局限性是，你需要保证游戏界面中仅仅出现你所定义的这些字符
+
+- 如果是基于Image来操作，将Type选为image
+
+  需要多注意的一点是你需要为每一种元素进行截图保存
+
+  ！！！**绝大多数场景下建议使用ocr类型的**
 
 
 ### Assets
@@ -230,7 +259,35 @@ class RealmRaidAssets:
 
   - `Full` -> tuple:  **检测整个图片的文本,并对结果进行过滤。返回的是匹配到的keyword的区域。如果没有匹配到返回(0, 0, 0, 0)**
   - `Single` -> str:  返回识别到的字符串
-  - `Digit` -> int : 返回识别到的数字，如果没有则返回0。**注意这个是int的不是float**
+  - `Digit` -> int : 返回识别到的数字，如果没有则返回0。**注意这个是int的不是float**
   - `DigitCounter` -> tuple: 返回识别到的数字计数，如果没有则返回0, 0, 0
   - `Duration` -> timedelta:  返回识别到的时间间隔 如果没有则返回timedelta(00:00:00)
 
+### RuleList
+
+- **self.swipe_pos()**
+
+  获取要滑动的两个点的坐标
+
+  ```python
+  number: int=2  # 要滑动的元素个数
+  after: bool=True  # 向前滑动还是向后滑动，水平方向after为右边，竖直方向后after为下边    
+  ```
+
+- **self.image_appear()**
+
+  判断所定义的图片是否出现
+
+  ```python
+  image: np.ndarray  # 模拟器的截图
+  name: str  # 图片保存的名字，也就是使用工具输入时候的名称
+  ```
+
+- **self.ocr_apper()**
+
+  判断所定义的文字是否出现
+
+  ```python
+  image: np.ndarray  # 模拟器的截图
+  name: str  # 使用工具输入时候的名字
+  ```
