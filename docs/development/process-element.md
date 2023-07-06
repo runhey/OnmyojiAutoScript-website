@@ -6,7 +6,7 @@
 
 下面将详细介绍其具体的使用，但是再此之前我们还需要探讨如何这类`Process Element`信息的存储问题，首先很自然的希望将其保存为json格式的数据运行时读取，而Alas 将其extracte生成代码。在 oas 里将两者结合，使用 RULE 生成全部的json信息后，extracte生成一个资源类，将其继承即可快速访问assets。
 
-### RULE Tool
+## RULE Tool
 
 在正式介绍使用之前先介绍我们的规则工具，在保证实例成功启动后
 
@@ -42,6 +42,8 @@
   :::
 
   ![image-20230622162835061](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221628826.png)
+
+## Rule
 
 ### Image
 
@@ -173,8 +175,14 @@ RuleList的应用场景是为了支持游戏界面中无法一次性展示所有
 
   ！！！**绝大多数场景下建议使用ocr类型的**
 
+### 
 
-### Assets
+
+
+
+
+
+## Assets
 
 在生成了所有的json数据后，你需要使用`./module/dev_tools/assets_extract.py`来将信息提取成Assets
 
@@ -291,3 +299,24 @@ class RealmRaidAssets:
   image: np.ndarray  # 模拟器的截图
   name: str  # 使用工具输入时候的名字
   ```
+
+### ImageGrid
+
+表示某一个场景中出现的所有的点击图片
+
+- **self.\__init__()**
+
+  底层依赖RuleImage
+
+  ```python
+  images: list[RuleImage]
+  ```
+
+- **self.find_anyone()**
+
+  在这些图片中锁定一张图片，返回的是识别到的图片的对象
+
+  ```python
+  ```
+
+  

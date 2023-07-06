@@ -153,15 +153,6 @@ from pydantic import BaseModel, Field
        scheduler: Scheduler = Field(default_factory=Scheduler)
    ```
 
-2. 如果导入的默认值不合适，可以这样修改, 将`default_factory`替换成`default`
-
-   ```python
-   from tasks.Component.config_scheduler import Scheduler
-   
-   class RealmRaid(ConfigBase):
-   	scheduler: Scheduler = Field(default=Scheduler(priority=6))
-   ```
-
 ### （3）新增  选项
 
 1. 对选项组依次添加选项（代码的顺序就是提供给用户显示的顺序）
