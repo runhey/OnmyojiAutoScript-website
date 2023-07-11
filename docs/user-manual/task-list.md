@@ -28,6 +28,9 @@
 
 ## 三、周常任务WeeklyTasks
 
+### 真八岐大蛇TrueOrochi
+!未完成
+
 ## 四、限时活动ActivityTasks
 
 ## 五、肝帝专享LiverEmperorExclusive

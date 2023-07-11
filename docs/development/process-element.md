@@ -45,6 +45,13 @@
 
 ## Rule
 
+:::danger
+
+每一种不同的Rule工具都需要单独新建一个json文件，同一种类型的Rule可以有多份json文件
+我们鼓励使用多份json文件而不是一直往一个json文件加信息
+
+:::
+
 ### Image
 
 :::info
