@@ -46,6 +46,11 @@ const sidebars = {
     },
     {
       type: 'doc',
+      label: '消息推送',
+      id: 'user-manual/notify',
+    },
+    {
+      type: 'doc',
       label: '常见问题',
       id: 'user-manual/frequently-asked-questions',
     },

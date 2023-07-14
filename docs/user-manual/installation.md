@@ -48,7 +48,7 @@ PypiMirror: 'https://pypi.tuna.tsinghua.edu.cn/simple'
 
 ```
 adb kill-server
-taskkill /f /im alas.exe
+taskkill /f /im oas.exe
 taskkill /f /im python.exe
 ```
 
