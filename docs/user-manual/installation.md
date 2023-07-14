@@ -90,6 +90,10 @@ oas 在早期设计中使用 OCR 来识别庭院下的文字以规避不同的�
 
 ![image-20230622231716712](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306222317916.png)
 
+庭院 => 头像设置 => 交互 => 战斗设置 => 关闭个性结算
+
+![image-20230714233151907](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202307142331743.png)
+
 庭院 => 图鉴 => 装饰： 左边
 
 | 设置名称 | 值       |
