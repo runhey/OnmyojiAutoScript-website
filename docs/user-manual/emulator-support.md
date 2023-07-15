@@ -28,7 +28,19 @@
 脚本通过使用这一个接口获取模拟器的当前画面（截屏），或者是向其发送消息（鼠标按下、弹起、移动...）来模拟人的行为。
 要使用这一方式来控制模拟器必须要知道当前的模拟器的句柄。
 
-打开 `./dev_tools/ViewWizard2/ViewWizard2.exe`
+
+https://www.aliyundrive.com/s/qv1w6diDsJQ
+提取码: zh82
+
+可能会报病毒，但是是安全的
+
+下载打开 `/ViewWizard2/ViewWizard2.exe`
+
+:::info
+
+这个三个工具都是查看window窗口的工具
+
+:::
 
 ![image-20230711133427660](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202307111334717.png)
 
