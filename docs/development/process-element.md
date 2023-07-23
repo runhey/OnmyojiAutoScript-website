@@ -8,7 +8,9 @@
 
 ## RULE Tool
 
-在正式介绍使用之前先介绍我们的规则工具，在保证实例成功启动后
+在正式介绍使用之前先介绍我们的规则工具，首先修改 `./module/config/argument/setting.json` 的 `branch` 为 `dev`, 这将使你的 oas 变成开发版
+
+在保证实例成功启动后
 
 ![image-20230622162055045](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221620835.png)
 
