@@ -8,6 +8,8 @@
 
 作者经常记不住阵容, 特此抄一份作业以记翻录
 
+同时这并不是最新的，任务的支持情况 [在此](https://github.com/runhey/OnmyojiAutoScript/issues/54)
+
 
 ## 一、御魂副本SoulZones
 
