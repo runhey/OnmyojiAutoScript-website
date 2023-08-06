@@ -14,4 +14,4 @@ issue 可以被看作是一个用来反馈问题、提出建议和交流的地�
 
 ### 二、负责任地使用 Pull Request(PR)
 
-如果还不了解什么是PR, 可以看一下 MMA 的一点[文档](https://maa.plus/docs/2.4-%E7%BA%AF%E7%BD%91%E9%A1%B5%E7%AB%AFPR%E6%95%99%E7%A8%8B.html)
+如果还不了解什么是PR, 可以看一下 MAA 的一点[文档](https://maa.plus/docs/2.4-%E7%BA%AF%E7%BD%91%E9%A1%B5%E7%AB%AFPR%E6%95%99%E7%A8%8B.html)
