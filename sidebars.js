@@ -41,6 +41,11 @@ const sidebars = {
     },
     {
       type: 'doc',
+      label: '进阶使用',
+      id: 'user-manual/advance',
+    },
+    {
+      type: 'doc',
       label: '模拟器支持',
       id: 'user-manual/emulator-support',
     },
@@ -48,6 +53,11 @@ const sidebars = {
       type: 'doc',
       label: '消息推送',
       id: 'user-manual/notify',
+    },
+    {
+      type: 'doc',
+      label: '协同系统',
+      id: 'user-manual/team-flow',
     },
     {
       type: 'doc',
