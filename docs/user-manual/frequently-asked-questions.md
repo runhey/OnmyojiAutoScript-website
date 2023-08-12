@@ -85,3 +85,38 @@
 
 ***总结***、双开或者多开主要是搞清楚对应模拟器的ADB号和相关的窗口句柄，然后windows系在获取窗口句柄的时候要看清楚父窗标题是否为 **Desktop**，否则会报错。
   有问题欢迎交流~
+
+  ---
+
+**Q:** 有些时候github需要更换到dev分支
+
+**A:** 打开deploy.yaml文件，将Branch的值改为dev，并保存和**重启**OAS
+
+![image](https://github.com/KteLinna/OnmyojiAutoScript-website/assets/94830638/ce80de24-2144-4438-a9f5-7935d2443c59)
+
+
+![image](https://github.com/KteLinna/OnmyojiAutoScript-website/assets/94830638/17cef437-8d13-4085-b3f5-31adcbdbeff5)
+
+---
+
+**Q:** 当出现网络请求错误的时候，需要换源。(ERROR:HTTP error 403 while getting .....)
+
+---
+
+![Q%0_TKN6_AYH3RHG4V F~3_tmb](https://github.com/KteLinna/OnmyojiAutoScript-website/assets/94830638/6cba5773-16de-49ba-9c9b-0edc0fcbead3)
+
+**A:** 打开deploy.yaml文件，将PypiMirror的地址改为其他，并保存和**重启**OAS
+
+![image](https://github.com/KteLinna/OnmyojiAutoScript-website/assets/94830638/6e9fe42a-ae15-41df-b0ff-aaee52a34440)
+
+其他地址：
+
+https://pypi.python.org/simple/
+
+https://mirrors.aliyun.com/pypi/simple/
+
+https://pypi.tuna.tsinghua.edu.cn/simple
+
+https://pypi.mirrors.ustc.edu.cn/simple/
+
+---
