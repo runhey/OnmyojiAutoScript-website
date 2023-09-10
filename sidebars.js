@@ -36,6 +36,11 @@ const sidebars = {
     },
     {
       type: 'doc',
+      label: '别像弱智一样提问',
+      id: 'user-manual/scientific-question',
+    },
+    {
+      type: 'doc',
       label: '安装',
       id: 'user-manual/installation',
     },
