@@ -9,6 +9,11 @@
 
 :::
 
+:::danger
+
+我们打算在2024.1.1全面切换新到GUI: [详细说明](#全新gui)
+:::
+
 ### 获取自动安装包
 
 在 [Github Releases](https://github.com/runhey/OnmyojiAutoScript/releases) 下载最新的自动安装包，但不要下载源码的 zip 压缩包。
@@ -158,3 +163,31 @@ config名称只能字母+数字
 1. 在侧边栏中，选择 `总览`。
 2. 任务队列中会显示所有你开启的任务。
 3. 点击 `开始`，oas 的任务调度器就会开始运行。
+
+## 全新GUI
+:::tip
+
+[OASX仓库](https://github.com/runhey/OASX)，关于GUI的详情以此为准
+
+:::
+
+### 理解拆分架构
+<img src="https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202311182129682.png" alt="架构图"  />
+
+在早先的设计中是不拆分前后端的，由于设计上的需要我们将其拆离出来，这样有如下的优势，但不再详细阐述：
+
+- **可维护性和可扩展性**
+- **跨平台和跨设备支持**
+- **性能优化**
+
+特别提一下，OASX 将会支持 Window、Liunx、macOS、Android这些系统支持。
+
+而OAS将会支持 Window、Liunx、macOS（正常人不会用苹果打游戏吧）。
+
+至于模拟器端，可以使用 ADB 就行的。
+
+再提一嘴，如果是第一次使用，那么你应该将这三端在同一个Window机器使用，
+
+✔🔥👍😍😍😍强烈推荐的：模拟器(Window) + OAS(Window) + OASX(Window)
+
+在这里只是简单的提一下，具体内容在[OASX仓库](https://github.com/runhey/OASX)。
