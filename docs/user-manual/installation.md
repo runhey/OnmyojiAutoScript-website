@@ -171,9 +171,14 @@ oas 在早期设计中使用 OCR 来识别庭院下的文字以规避不同的�
 
 ## 四、使用旧版 OAS
 
-xxx
+### 1.下载旧版 OAS
+[下载链接v0.0.3](https://github.com/runhey/OnmyojiAutoScript/releases)， 不要下载跟OASX对接的版本。
 
+### 2.启动
 
+同上方一致
+
+![image-20231207231056648](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312072310056.png)
 
 
 
