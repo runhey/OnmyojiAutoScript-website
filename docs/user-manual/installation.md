@@ -9,10 +9,6 @@
 
 :::
 
-:::danger
-
-我们打算在2024.1.1全面切换新到GUI: [仓库详细说明](https://github.com/runhey/OASX)
-:::
 ### 理解拆分架构
 <img src="https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202311182129682.png" alt="架构图"  />
 
@@ -33,19 +29,31 @@
 ✔🔥👍😍😍😍强烈推荐的：模拟器(Windows) + OAS(Windows) + OASX(Windows)
 
 
-## 一、安装使用 OAS
+## 一、下载安装包
 
-### 1.获取自动安装包
+### 1.下载 OASX
+在 [Github Releases](https://github.com/runhey/OASX/releases) 下载最新的安装包，首次使用推荐是 windows。
 
+### 2.下载 OAS
 在 [Github Releases](https://github.com/runhey/OnmyojiAutoScript/releases) 下载最新的自动安装包，但不要下载源码的 zip 压缩包。
 
-下载完成后解压安装包。完整安装将需要约 1 GB 的空间。
+### 3.解压文件夹
+将下载的安装包解压到你需要的位置，你应当将 OASX 和 OAS 这两个区分开，这两个本质上是不同的程序。
 
-### 2.编辑安装设置
+OAS仅仅下载一个简易的启动包，完整安装将需要约 1 GB 的空间。
 
-阅读安装配置文件 `config/deploy.yaml` 中的注释，并根据自己的情况修改。这被认作是 oas 的使用门槛。
 
-主要是保证两处如下相同即可，其他保持默认即可。
+### 3.卸载 OAS
+
+**OAS** 安装包里的内容都是便携的，直接删除即完成卸载。你也可以利用这个特性，将已完成安装的 oas 复制到别的电脑上。
+如果你在删除的过程中，遇到文件被占用无法删除的情况，可以从 OASX 关闭 OAS 任务来关闭。
+
+## 二、启动OAS
+
+### 1.编辑 OAS 启动配置
+阅读安装配置文件 `./config/deploy.yaml` 中的注释，并根据自己的情况修改。这被认作是 OAS 的使用门槛。
+当然你也是可以通过 OASX 来进行修改，详细点击[此处](#1从-oasx-启动)。
+![](/picture/3a8c1d5affa551f8f029acb00e1eebc3.png)
 
 :::danger
 
@@ -53,52 +61,50 @@
 
 :::
 
+主要是保证两处如下相同即可，其他保持默认即可。
+
 ```
 Repository: 'https://e.coding.net/onmyojiautoscript/oas/OnmyojiAutoScript.git'
 PypiMirror: 'https://pypi.tuna.tsinghua.edu.cn/simple'
 ```
-### 3.使用启动器
+### 2.启动 OAS
+启动 OAS 的本质就是使用 python 执行两个文件 `deploy/install.py` 和 `server.py`。
 
-##### 第一种启动方式: oas.exe
-
-确保解压无误后双击打开 `oas.exe`，自动安装程序将完成从拉取项目，安装环境到准备 ADB 的步骤。自动安装通常需要花费 2 - 3 分钟，期间请耐心等待，安装完成后，oas 服务端将启动完毕，记住这个`0.0.0.0: 22288`。
-
-![image-20230619183211566](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306191832110.png)
-
-![image-20231206213228384](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312062132714.png)
-
-##### 第二种启动方式：oas-backend.bat
-这个是因为前一种启动会留下一个黑框，当你希望启动后无感使用oas的话，你可以使用这一种启动方式，(首次使用不可行)，但是这一启动并不会更新你的oas代码。
-
-### 4.卸载 oas
-
-**oas** 安装包里的内容都是便携的，直接删除即完成卸载。你也可以利用这个特性，将已完成安装的 oas 复制到别的电脑上。
-
-如果你在删除的过程中，遇到文件被占用无法删除的情况，可以尝试打开 `console.bat`，并在里面运行：
-
+前者将完成从拉取项目，安装环境到准备 ADB 的步骤。首次安装通常需要花费 2 - 3 分钟，期间请耐心等待，安装完成后将会正式执行 OAS 服务。启动成功后日志将会显示
 ```
-adb kill-server
-taskkill /f /im oas.exe
-taskkill /f /im python.exe
+<<< LAUNCHER CONFIG >>>
+[Host] 0.0.0.0 
+[Port] 22288
+[Reload] False
+OAS web service startup done
 ```
-或者是从 OASX 关闭 OAS 任务来关闭。
+记住这个 `[Port]` 后面的数字，登录时候用到。这里将会告诉你三种启动 OAS 的方法，当然本质都是一样的。
 
+##### （1）从 OASX 启动
+点击登录页右下角服务按钮，将进入 OAS 服务页面，这个时候你需要配置你的 OAS 文件夹路径,如何识别为正确的文件夹路径将会给你显示右下角的启动按钮，当然在此之前你应当确保你已经正确配置了 `deploy.yaml` 文件，这个非常重要。如果没有问题你可以再次点击右下角的启动按钮。
+这会输出启动日志。
+![](/picture/3a8c1d5affa551f8f029acb00e1eebc3.png)
 
-## 二、安装使用 OASX
+##### （2）使用 oas.exe 启动
+执行 `oas.exe` 程序，同样会输出启动日志, 值得一提的是这将会存留一个黑框，当你关闭时候同样意味着结束 OAS 服务。
+![](/picture/2023-12-29-212742.png)
+![](/picture/2023-12-29-212712.png)
 
-### 1.获取构建好的安装包
+##### （3）使用命令行启动
+打开 `console.dat` 执行
+```shell
+python  -m deploy.installer
+```
+```shell
+python server.py
+```
 
-在 [Github Releases](https://github.com/runhey/OASX/releases) 下载最新的安装包，首次使用推荐是 windows。
-
-### 2.登录你的OAS
-
-记住你上一步的端口号,添入 IP+PORT，但是不要填 `Username` 和 `Password`,  点击 登录 。如果能进去就OK
-
-![image-20231206214747821](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312062147692.png)
-
-
+### 3.登录 OAS
+记住你所配置的端口号, 添入 `IP:Port`，但是不要填 `Username` 和 `Password`,  点击登录。
 
 **但是如果你的 OAS  和 OASX 不是同一个设备下的**。那你就不应该填入IP `127.0.0.1` 而是你运行 OAS 机器的 IP 地址。
+![](/picture/bd5b4e1afac32a722521a595b6b50ceb.png)
+
 
 ## 三、开始使用
 
@@ -154,9 +160,9 @@ oas 在早期设计中使用 OCR 来识别庭院下的文字以规避不同的�
 
 初次进入，你应当配置好脚本设置，几个重要的如 `模拟器Serial`、`句柄Handle`、`截屏方案`、 `控制方案`。可能会出错，这需要你根据不同设备进行选择，一般默认 auto 即可。
 
-![image-20231206220048788](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312062200546.png)
+![image-20231206220048788](/picture/153bd4e8ea95a9e3f1a05e8ee2360e7a.png)
 
-![image-20231206220124401](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312062201616.png)
+![image-20231206220124401](/picture/309ad438dedebc09efcbe9a8790a3a2c.png)
 
 ### 4.配置你所需要的任务
 
@@ -166,7 +172,7 @@ oas 在早期设计中使用 OCR 来识别庭院下的文字以规避不同的�
 
 点击开关按钮即可启动，然后就可以愉快地玩耍啦，若配置不对将以日志形式告知你。
 
-![image-20231206220812821](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312062208133.png)
+![image-20231206220812821](/picture/3f34707bb17b9fde61493c04fb023514.png)
 
 
 ## 四、使用旧版 OAS
