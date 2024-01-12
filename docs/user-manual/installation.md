@@ -5,8 +5,6 @@
 
 自动安装仅仅适用于window系统，同时目前还没适配mac和liunx。
 
-这里安装的部署方式同Alas一致，熟悉的同学可以直接上手。
-
 :::
 
 ### 理解拆分架构
@@ -40,7 +38,7 @@
 ### 3.解压文件夹
 将下载的安装包解压到你需要的位置，你应当将 OASX 和 OAS 这两个区分开，这两个本质上是不同的程序。
 
-OAS仅仅下载一个简易的启动包，完整安装将需要约 1 GB 的空间。
+OAS仅仅下载一个简易的启动包，完整安装将需要约 600 MB 的空间。
 
 
 ### 3.卸载 OAS
@@ -186,9 +184,15 @@ oas 在早期设计中使用 OCR 来识别庭院下的文字以规避不同的�
 ### 1.下载旧版 OAS
 [下载链接v0.0.3](https://github.com/runhey/OnmyojiAutoScript/releases)， 不要下载跟OASX对接的版本。
 
+你需要单独安装 pyside6
+
+```shell
+pip install pyside6==6.4.3
+```
+
 ### 2.启动
 
-同上方一致
+同上方一致, 本质是启动 `gui.py`
 
 ![image-20231207231056648](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202312072310056.png)
 
