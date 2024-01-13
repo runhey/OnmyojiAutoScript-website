@@ -12,10 +12,11 @@
 
 3. 下载[最新环境包](https://github.com/runhey/OnmyojiAutoScript/releases), 解压复制`toolkit`，`deploy`两个文件夹和`console.bat`到本地的仓库根目录，`toolkit`里面包含python最小环境、git环境和GUI启动环境。
 
-4. 安装pip库, 安装后你可以执行`gui.py`启动进行测试
+4. 安装pip库, 安装后你可以执行`gui.py`启动进行测试。当然 `pyside6` 是不在 `requirements.txt` 中的，所以你需要单独安装
 
    ```bash
    ./toolkit/python.exe -m pip install -r requirements.txt 
+   ./toolkit/python.exe -m pip install pyside6==6.4.3
    ```
 
 5. 此时你可以进行 ~~瞎 JB 改~~ 开发了，建议每一定数量提交一个 `commit`，再提交 `commit`, 别忘了按照下面的 `统一格式` 写上 `message`
@@ -75,10 +76,8 @@
 
 :::info
 
-- Pycharm:  
-
-- QtCreator: 用于qml开发
-- Linguist: Qt家的翻译器
+- Pycharm:  用于python开发
+- VSCode:  用于python开发
 
 :::
 

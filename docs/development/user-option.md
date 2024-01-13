@@ -274,35 +274,30 @@ SCHEDULER_PRIORITY 是一个过滤器，用大于号 `>` 连接任务，靠前�
 
 ### （7）翻译
 
-在 `./module/config/i18n/{lang}.ts`是翻译的文件，这里我们默认是`zh_CN.ts`，这个文件的本质就是html文件。
+:::info
 
-1. 添加翻译项: 以html形式打开文件，当然以txt形式打开也可。
+QML的版本的翻译文件在`./module/config/i18n/{lang}.ts`, 这个文件的本质就是html文件。
 
-   `context` 指翻译的上下文，具体的说就是调用`qrts()`的某个具体的qml文件名，在我们用户选项这里是Args
+:::
 
-   ```html
-   <context>
-       <name>Args</name>
-       <message>
-           <source>home</source>
-           <translation>主页</translation>
-       </message>
-   	<message>
-           <source>setting</source>
-           <translation>设置</translation>
-       </message>
-   </context>
-   ```
+在接入OASX后翻译工作在UI端进行配置，这时候就是要对 [OASX](https://github.com/runhey/OASX) 进行提交一个 Pr
 
-2. 编译成二进制：使用Linguist进行编译输出`zh_CN.qm`。下载链接[Releases · thurask/Qt-Linguist (github.com)](https://github.com/thurask/Qt-Linguist/releases)
+你需要fork一个分支，用VSCode打开（可以有一个dart语言的插件），
+然后修改`./lib/comom/` 下的翻译文件，可以直接是 `I18n.dart`， 定义一个Map，然后加入到总的Map里面去。
 
-​	打开文件后
+```dart
+  Map<String, String> get _cn_pets_config => {
+        'pets_config': '小猫咪',
+        'pets_happy': '其乐融融',
+        'pets_feast': '饕餮大餐',
+      };
+```
 
-![image-20230622125909254](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221259538.png)
+```dart
+    zh_CN.addAll(_cn_pets_config);
+```
 
-​	我们不建议在Linguist中修改任何的翻译项，只需要编译生成文件即可
-
-![image-20230622130033514](https://runhey-img-stg1.oss-cn-chengdu.aliyuncs.com/img2/202306221300431.png)
+但是 OASX 是编译型的，并不会实时生效，所以你需要提交一个 pr，然后等待合并发布就可以了。
 
 :::tip
 

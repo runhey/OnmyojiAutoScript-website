@@ -83,8 +83,10 @@ Stop-Ask-Questions-The-Stupid-Ways
 > 千万别认为只有别人帮助你之后才需要说 `谢谢`。
 
 ## 学会提供截图和日志
+![](/picture/show_error.png)
+
 ```
-2023-09-06 20:31:17.429 |  WARNING | Saving error: ./log/error/1694003477429  
+2023-09-06 20:31:17.429 |  WARNING | Saving error: ./log/error/1701874982691  
 ```
 1. 出问题的时候看不到这行吗？别一上来就截个电脑屏幕，甚至还有的手机拍照。
 1. 若不是错误而是非预期的行为，提供在 log 目录下当天的 log和至少一张游戏截图。
@@ -92,6 +94,8 @@ Stop-Ask-Questions-The-Stupid-Ways
 
 > 学会保护自己截图上的ID信息，不然等着的就是鬼使黑给你打电话
 
+这里保存着所有的日志文件，包括里面出错的。
+![](/picture/show_all_log.png)
 
 ## 学会使用 [Issue](https://github.com/runhey/OnmyojiAutoScript/issues)
 别只知道无脑在群里面提问，群里的大佬们早受不了这些一遍又一遍的提问。要知道群的唯一作用：交流、分享、吹水、扯淡，一切都基于这个原则。
@@ -106,3 +110,4 @@ Stop-Ask-Questions-The-Stupid-Ways
 
 ## 什么是弱智一样的提问
 ~ 现在懒得翻群了，期待你的提问到这里吧
+![](/picture/incorrect_demonstration_1.png)
