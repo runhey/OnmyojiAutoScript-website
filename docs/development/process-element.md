@@ -8,7 +8,7 @@
 
 ## RULE Tool
 
-在正式介绍使用之前先介绍我们的规则工具，首先修改 `./module/config/argument/setting.json` 的 `branch` 为 `dev`, 这将使你的 oas 变成开发版
+在正式介绍使用之前先介绍我们的规则工具，首先修改 `./module/config/argument/setting.json` 的 `branch` 为 `dev`, 这将使你的 oas 变成开发版。启动根目录下的 `gui.py` 这个是老版本的oas。
 
 在保证实例成功启动后
 
