@@ -61,6 +61,11 @@ const sidebars = {
     },
     {
       type: 'doc',
+      label: '百鬼夜行',
+      id: 'user-manual/hyakkiyakou',
+    },
+    {
+      type: 'doc',
       label: '协同系统',
       id: 'user-manual/team-flow',
     },
