@@ -95,7 +95,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/runhey/OASX',
+            href: 'https://runhey.github.io/OASX/',
             label: 'OASX',
             position: 'right',
           },
