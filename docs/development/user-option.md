@@ -340,6 +340,8 @@ def __getattr__(self, name):
 在选项组（group）定义里面加入`dynamic_hide('argument_name') `
 举例
 ```
+from tasks.Component.config_base import dynamic_hide
+
 class GuildBanquetTime(BaseModel):
     run_time_1: Time = Field(default=Time(hour=19, minute=0, second=0))
     run_time_2: Time = Field(
