@@ -336,3 +336,19 @@ def __getattr__(self, name):
         return None  # 或者抛出异常，或者返回其他默认值
 ```
 
+## 隐藏选项
+在选项组（group）定义里面加入`dynamic_hide('argument_name') `
+举例
+```
+class GuildBanquetTime(BaseModel):
+    run_time_1: Time = Field(default=Time(hour=19, minute=0, second=0))
+    run_time_2: Time = Field(
+        default=Time(hour=19, minute=0, second=0), 
+        description="每周第2次运行时间设置"
+    )
+    hide_fileds = dynamic_hide('run_time_1', 'run_time_2')
+# hide_fileds 可以随便起一个名字
+# danamic_hide 可以隐藏任意数量的选项
+```
+
+
