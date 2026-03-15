@@ -28,6 +28,21 @@
 	threshold: float=None  # 阈值
 	duration: float=None  # 如果是长按，可以输入长按的时间
 	```
+ 
+- **self.appear_multi_scale()**
+- **self.appear_then_click_multi_scale()**
+    
+    同上，但是添加了参数，支持多尺度模板匹配，适用于大小会变的元素
+
+    ```python
+   # scale_range: 缩放范围 (start, end, step)，step不填默认0.1
+   self.appear_then_click_multi_scale(self.I_SHI_GROWN, scale_range=(0.8, 1.2))
+   # scales: 自定义缩放列表
+   self.appear_then_click_multi_scale(self.I_SHI_GROWN, scales=[0.8, 0.9, 1.0, 1.1])
+   # 都不指定则使用默认 [0.5, 0.6, ..., 1.2]
+   self.appear_then_click_multi_scale(self.I_SHI_GROWN)
+   优先级：scale_range > scales > 默认
+  ```
 
 - **self.wait_until_appear()**
 
